@@ -12,6 +12,7 @@
           type="text"
           v-model="name"
         />
+        <span v-if="nameError" class="error-text">Имя обязательно</span>
 
         <DefaultTextInput
           label="Телефон"
@@ -20,6 +21,7 @@
           v-model="phone"
           :maxlength="11"
         />
+        <span v-if="phoneError" class="error-text">Некорректный телефона</span>
 
         <div class="parent-select-container">
           <label>
@@ -45,7 +47,7 @@
     <template v-slot:footer>
       <DefaultButton @click="submit"> Сохранить </DefaultButton>
 
-      <p class="error-text" v-if="isCaveatVisible">Заполните все поля *</p>
+      <p class="error-text" v-if="formError">Заполните все поля *</p>
     </template>
   </DefaultModal>
 </template>
@@ -76,7 +78,9 @@ export default {
       name: null,
       phone: null,
       parentId: null,
-      isCaveatVisible: false,
+      phoneError: false,
+      formError: false,
+      nameError: false,
     };
   },
   emits: {
@@ -94,8 +98,21 @@ export default {
     },
   },
   methods: {
+    validatePhone(phone) {
+      const phoneRegex = /^\+7\s\(\d{3}\)\s\d{2}\s\d{2}\s\d{2}$/;
+      return phoneRegex.test(phone);
+    },
     submit() {
-      if (this.isFormFilled) {
+      this.phoneError = !this.validatePhone(this.phone);
+      this.nameError = !this.name
+      this.formError = !this.isFormFilled;
+
+
+      if (this.phoneError || this.nameError) {
+        return;
+      }
+
+      if (!this.formError) {
         const newEmployeeLevel = this.parentId
           ? this.allEmployees.find((employee) => employee.id === this.parentId)
               .level + 1
@@ -110,8 +127,6 @@ export default {
           isChildrenOpen: false,
         });
         this.close();
-      } else {
-        this.isCaveatVisible = true;
       }
     },
     close() {
@@ -137,6 +152,6 @@ export default {
 }
 
 .error-text {
-  color: var(--error-text-color)
+  color: var(--error-text-color);
 }
 </style>
