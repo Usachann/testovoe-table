@@ -19,7 +19,7 @@
           placeholder="+ 7 (XXX) XX XX XX"
           type="tel"
           v-model="phone"
-          :maxlength="11"
+          :maxlength="12"
         />
         <span v-if="phoneError" class="error-text">Некорректный телефона</span>
 
