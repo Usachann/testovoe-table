@@ -16,12 +16,14 @@
 
         <DefaultTextInput
           label="Телефон"
-          placeholder="+ 7 (XXX) XX XX XX"
+          placeholder="7 XXX XX XX XXX"
           type="tel"
           v-model="phone"
           :maxlength="12"
         />
-        <span v-if="phoneError" class="error-text">Некорректный телефона</span>
+        <span v-if="phoneError" class="error-text"
+          >Некорректный формат телефона</span
+        >
 
         <div class="parent-select-container">
           <label>
@@ -98,17 +100,29 @@ export default {
     },
   },
   methods: {
+    formatPhone(phone) {
+      const cleaned = ("" + phone).replace(/\D/g, "");
+      const match = cleaned.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
+      if (match) {
+        return `+${match[1]}(${match[2]})${match[3]}-${match[4]}-${match[5]}`;
+      }
+      return null;
+    },
     validatePhone(phone) {
-      const phoneRegex = /^\+7\s\(\d{3}\)\s\d{2}\s\d{2}\s\d{2}$/;
-      return phoneRegex.test(phone);
+      const phoneRegExp = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
+      return phoneRegExp.test(phone);
     },
     submit() {
+      this.phone = this.formatPhone(this.phone);
       this.phoneError = !this.validatePhone(this.phone);
-      this.nameError = !this.name
+      this.nameError = !this.name;
       this.formError = !this.isFormFilled;
 
+      if (this.nameError) {
+        return;
+      }
 
-      if (this.phoneError || this.nameError) {
+      if (this.phoneError) {
         return;
       }
 
@@ -135,7 +149,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .parent-select-container {
   display: flex;

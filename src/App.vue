@@ -1,22 +1,24 @@
 <template>
   <div class="employee-management-container">
-    <DefaultButton @click="openEmployeeFormModal"> Добавить </DefaultButton>
+    <div class="employee-management">
+      <DefaultButton @click="openEmployeeFormModal"> Добавить </DefaultButton>
 
-    <EmployeeTable
-      v-if="tableHasEmployees"
-      @sortEmployees="sortEmployees"
-      @updateEmployees="updateEmployees"
+      <EmployeeTable
+        v-if="tableHasEmployees"
+        @sortEmployees="sortEmployees"
+        @updateEmployees="updateEmployees"
+        :employees="employees"
+      />
+      <p v-else>Нет добавленных сотрудников</p>
+    </div>
+
+    <EmployeeFormModal
+      v-if="isModalVisible"
+      @close="closeEmployeeFormModal"
+      @submit="addNewEmployee"
       :employees="employees"
     />
-    <p v-else>Нет добавленных сотрудников</p>
   </div>
-
-  <EmployeeFormModal
-    v-if="isModalVisible"
-    @close="closeEmployeeFormModal"
-    @submit="addNewEmployee"
-    :employees="employees"
-  />
 </template>
 
 <script>
@@ -78,11 +80,14 @@ export default {
 
 <style scoped>
 .employee-management-container {
+  width: 100%;
+}
+
+.employee-management {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
   gap: 1em;
   padding: 1em;
 }

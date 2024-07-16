@@ -45,8 +45,7 @@ export default {
 
 <style scoped>
 .table {
-  width: 80%;
-  max-width: 700px;
+  width: 100%;
   border-collapse: collapse;
 }
 
