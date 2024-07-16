@@ -60,5 +60,6 @@ export default {
   border: 1px solid var(--bg-secondary-color);
   text-align: left;
   padding-left: 1rem;
+  color: #ffffff;
 }
 </style>

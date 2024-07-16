@@ -1,6 +1,7 @@
 <template>
   <div @click="close" class="modal-backdrop">
     <div @click.stop class="modal">
+      <button @click="close" class="close-button">x</button>
       <div class="header">
         <slot name="header"></slot>
       </div>
@@ -24,10 +25,10 @@ export default {
   },
   methods: {
     close() {
-      this.$emit("close")
+      this.$emit("close");
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -50,6 +51,7 @@ export default {
   flex-direction: column;
   border-radius: 10px;
   padding: 2rem;
+  padding-top: 1.5rem;
 }
 
 .header {
@@ -58,6 +60,15 @@ export default {
 
 .body {
   margin-top: 0.5em;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: right;
+  margin-right: -10px;
 }
 
 .footer {
